@@ -1,0 +1,27 @@
+2024-11-11 09:41:40.908923168  Traceback (most recent call last):
+2024-11-11 09:41:40.908926008    File "/usr/lib/python3.9/wsgiref/handlers.py", line 137, in run
+2024-11-11 09:41:40.908926938      self.result = application(self.environ, self.start_response)
+2024-11-11 09:41:40.908927788    File "/usr/local/lib/python3.9/dist-packages/ws4py/server/wsgiutils.py", line 101, in __call__
+2024-11-11 09:41:40.908928498      raise HandshakeError('Header %s is not defined' % key)
+2024-11-11 09:41:40.908942478  ws4py.exc.HandshakeError: Header HTTP_UPGRADE is not defined
+2024-11-11 09:41:40.909181030  192.168.178.5 - - [11/Nov/2024:09:41:40 +0100] "GET /ws HTTP/1.1" 500 70 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" "-"
+2024-11-11 09:41:49.248390194  Traceback (most recent call last):
+2024-11-11 09:41:49.248393234    File "/usr/lib/python3.9/wsgiref/handlers.py", line 137, in run
+2024-11-11 09:41:49.248394234      self.result = application(self.environ, self.start_response)
+2024-11-11 09:41:49.248395054    File "/usr/local/lib/python3.9/dist-packages/ws4py/server/wsgiutils.py", line 101, in __call__
+2024-11-11 09:41:49.248395724      raise HandshakeError('Header %s is not defined' % key)
+2024-11-11 09:41:49.248411204  ws4py.exc.HandshakeError: Header HTTP_UPGRADE is not defined
+2024-11-11 09:41:49.248610446  192.168.178.5 - - [11/Nov/2024:09:41:49 +0100] "GET /ws HTTP/1.1" 500 70 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" "-"
+2024-11-11 09:41:57.326202545  Traceback (most recent call last):
+2024-11-11 09:41:57.326205665    File "/usr/lib/python3.9/wsgiref/handlers.py", line 137, in run
+2024-11-11 09:41:57.326206605      self.result = application(self.environ, self.start_response)
+2024-11-11 09:41:57.326207485    File "/usr/local/lib/python3.9/dist-packages/ws4py/server/wsgiutils.py", line 101, in __call__
+2024-11-11 09:41:57.326208235      raise HandshakeError('Header %s is not defined' % key)
+2024-11-11 09:41:57.326223775  ws4py.exc.HandshakeError: Header HTTP_UPGRADE is not defined
+2024-11-11 09:41:57.326432467  192.168.178.5 - - [11/Nov/2024:09:41:57 +0100] "GET /ws HTTP/1.1" 500 70 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" "-"
+2024-11-11 09:42:06.756735994  Traceback (most recent call last):
+2024-11-11 09:42:06.756739794    File "/usr/lib/python3.9/wsgiref/handlers.py", line 137, in run
+2024-11-11 09:42:06.756740804      self.result = application(self.environ, self.start_response)
+2024-11-11 09:42:06.756756094    File "/usr/local/lib/python3.9/dist-packages/ws4py/server/wsgiutils.py", line 101, in __call__
+2024-11-11 09:42:06.756756984      raise HandshakeError('Header %s is not defined' % key)
+2024-11-11 09:42:06.756757794  ws4py.exc.HandshakeError: Header HTTP_UPGRADE is not defined

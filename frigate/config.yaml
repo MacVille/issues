@@ -1,0 +1,225 @@
+mqtt:
+  enabled: true
+  #host: core-mosquitto
+  host: 192.168.178.53
+  port: 1883
+  user: mqtt_frigate
+  password: mqtt_frigate_pass
+
+#Wird benötigt, damit NPM Funktioniert
+tls:
+  enabled: false
+
+auth:
+  failed_login_rate_limit: 5/minute
+  enabled: false
+  trusted_proxies:
+    - 192.168.178.5
+    - 192.168.178.147
+
+proxy:
+  header_map:
+    user: X-authentik-username
+
+ffmpeg:
+  #hwaccel_args: preset-nvidia-h264
+  output_args:
+    record: preset-record-generic-audio-aac
+
+detectors:
+  coral:
+    type: edgetpu
+    device: usb
+
+objects:
+  track:
+    - person
+    - car
+    - bicycle
+    - motorcycle
+    - umbrella
+    - dog
+    - cat
+    - bus
+  filters:
+    person:
+      min_area: 5000
+      max_area: 10000
+
+birdseye:
+  enabled: true
+  mode: continuous
+  width: 1920
+  height: 1080
+
+timestamp_style:
+  position: tl
+  format: '%d.%m.%Y %H:%M:%S'
+  color:
+    red: 255
+    green: 255
+    blue: 255
+  thickness: 2
+  effect: shadow
+
+ui:
+  time_format: 24hour
+  date_style: short
+  time_style: medium
+  strftime_fmt: '%d.%M.%Y %H:%M'
+
+#################################
+#Globale Defintion von Snapshots
+#################################
+snapshots:
+  enabled: true
+  clean_copy: true
+  timestamp: false
+  bounding_box: true
+  retain:
+    default: 5
+    objects:
+      person: 3
+      car: 3
+      dog: 3
+      cat: 3
+  quality: 95
+
+#################################
+#Globale Defintion von Rekorings
+#################################
+record:
+  enabled: true
+  expire_interval: 60
+  sync_recordings: false
+  retain:
+    days: 3
+    mode: all
+  preview:
+    # Optional: Quality of recording preview (default: shown below).
+    # Options are: very_low, low, medium, high, very_high
+    quality: high
+  # Optional: Event recording settings
+  events:
+    pre_capture: 5
+    post_capture: 5
+    retain:
+      default: 3
+      mode: motion
+
+#################################
+#Globale Defintion von Detektoren
+#################################
+detect:
+  width: 640
+  height: 360
+  fps: 5
+  enabled: true
+  stationary:
+    interval: 10
+
+#################################
+#Globale Defintion von Audio Einstellungen
+#################################
+#audio:
+#  enabled: true
+#  max_not_heard: 30
+#  min_volume: 500
+#  listen:
+#    - bark
+#    - fire_alarm
+#    - scream
+#    - speech
+#    - yell
+#    - crying
+
+go2rtc:
+  streams:
+    Kamera_Haus_Links:
+      - rtsp://nvr:Nokia3510I@192.168.178.64/Preview_01_main
+      - ffmpeg:rtsp_cam#audio=opus
+    Kamera_Haus_Links_sub:
+      - rtsp://nvr:Nokia3510I@192.168.178.64/Preview_01_sub
+      #- ffmpeg:rtsp_cam#audio=opus
+    Kamera_Haus_Rechts:
+      - rtsp://nvr:Nokia3510I@192.168.178.57/Preview_01_main
+      - ffmpeg:rtsp_cam#audio=opus
+    Kamera_Haus_Rechts_sub:
+      - rtsp://nvr:Nokia3510I@192.168.178.57/Preview_01_sub
+      #- ffmpeg:rtsp_cam#audio=opus
+
+#################################
+#Definition von Kameras
+#################################
+cameras:
+  Kamera_Haus_Links:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Kamera_Haus_Links
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            #- audio
+        - path: rtsp://127.0.0.1:8554/Kamera_Haus_Links_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    zones:
+      hof_kamera_links:
+        coordinates: 
+          0.078,0.996,0.734,0.999,0.714,0.501,0.706,0.411,0.699,0.293,0.686,0.189,0.673,0.108,0.441,0.142,0.33,0.362,0.271,0.49,0.238,0.571,0.181,0.724,0.11,0.924
+        inertia: 3
+        loitering_time: 0
+    motion:
+      threshold: 30
+      contour_area: 10
+      improve_contrast: 'true'
+      mask:
+        - 0.305,0.026,0.303,0.067,0.013,0.066,0.014,0.024
+        - 0.993,0.858,0.987,0.741,0.902,0.407,0.735,0,1,0,1,1
+    review:
+      detections:
+        required_zones: hof_kamera_links
+    objects:
+      mask: 
+        0.68,0.102,0.666,0.003,0.667,0,0,0,0,1,0.07,1,0.109,0.92,0.137,0.842,0.186,0.701,0.237,0.567,0.293,0.44,0.341,0.335,0.386,0.247,0.442,0.136
+      filters:
+        car: {}
+  Kamera_Haus_Rechts:
+    ffmpeg:
+      inputs:
+        - path: rtsp://127.0.0.1:8554/Kamera_Haus_Rechts
+          input_args: preset-rtsp-restream
+          roles:
+            - record
+            #- audio
+        - path: rtsp://127.0.0.1:8554/Kamera_Haus_Rechts_sub
+          input_args: preset-rtsp-restream
+          roles:
+            - detect
+    motion:
+      mask:
+        - 0.988,0.025,0.991,0.062,0.7,0.069,0.699,0.025
+        - 0.121,0.051,0.122,0.09,0.08,0.202,0.057,0.273,0.036,0.345,0.017,0.422,0,0.504,0,0,0.115,0,0.107,0.052
+    objects:
+      mask: 
+        0.779,1,1,0.997,0.998,0.003,0.312,0.002,0.329,0.041,0.338,0.062,0.35,0.114,0.361,0.141,0.375,0.175,0.392,0.207,0.408,0.238,0.424,0.267,0.443,0.303,0.463,0.337,0.483,0.379,0.503,0.422,0.544,0.506,0.566,0.555,0.58,0.581,0.591,0.603,0.603,0.626,0.63,0.686,0.648,0.72,0.667,0.76,0.682,0.797,0.702,0.838,0.725,0.889,0.751,0.941
+    zones:
+      hof_kamera_rechts:
+        coordinates: 
+          0.172,0.09,0.166,0.149,0.159,0.188,0.155,0.226,0.149,0.275,0.146,0.321,0.141,0.384,0.136,0.426,0.133,0.465,0.13,0.516,0.131,0.567,0.129,0.628,0.129,0.686,0.129,0.751,0.129,0.822,0.132,0.899,0.134,0.955,0.137,0.993,0.775,1,0.743,0.931,0.716,0.875,0.683,0.807,0.641,0.709,0.598,0.624,0.569,0.564,0.542,0.508,0.52,0.466,0.481,0.386,0.452,0.328,0.428,0.286,0.395,0.219,0.366,0.16,0.351,0.128,0.338,0.096,0.336,0.081
+        loitering_time: 0
+        inertia: 3
+    review: {}
+version: 0.14
+camera_groups:
+  Birdseye:
+    order: 1
+    icon: LuBird
+    cameras: birdseye
+  Test:
+    order: 2
+    icon: LuCamera
+    cameras:
+      - Kamera_Haus_Links
+      - Kamera_Haus_Rechts
